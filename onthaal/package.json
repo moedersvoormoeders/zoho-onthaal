@@ -1,0 +1,18 @@
+{
+  "name": "onthaal",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "cd onthaal; npm run-script build; cd ..; cp -r onthaal/dist/* app/; node server/index.js",
+    "build": "cd onthaal; npm run-script build; cd ..; cp -r onthaal/dist/* app/; zet pack"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "errorhandler": "^1.4.2",
+    "express": "^4.13.3",
+    "morgan": "^1.6.1",
+    "serve-index": "^1.9.0",
+    "chalk": "^1.1.3",
+    "i18next": "^10.0.7"
+  }
+}

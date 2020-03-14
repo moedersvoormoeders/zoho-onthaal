@@ -104,15 +104,32 @@ export default {
   methods: {
     print: function(result) {
       var vm = this;
+
+      result.ticketCount = this.ticketCount
+      try {
+        sendPrint(result)
+      } catch (error) {
+        this.$Simplert.open({
+          title: "Printer probleem!",
+          message: error,
+          type : "error",
+          customCloseBtnText: "Sluiten",
+          onClose: function() {
+            vm.$refs.search.focus()
+          }
+        });
+      }
+
       this.$Simplert.open({
-          title: "Print werkt nog niet!",
-          message: "Printen is nog niet geimplementeerd",
-          type: "error",
+          title: "Print verstuurd",
+          message: "Print opdracht verstuurd naar de voeding",
+          type: "success",
           customCloseBtnText: "Sluiten",
           onClose: function() {
             vm.$refs.search.focus()
           }
       });
+
       this.ticketCount++
       console.log(result)
     },
@@ -166,4 +183,20 @@ export default {
     vm.loading = false; // RM ME
   }
 };
+
+async function sendPrint(data = {}) {
+  const response = await fetch("https://print.voeding.mvm.maartje.dev/print", {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+       },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(data)
+  });
+  return await response.json();
+}
 </script>

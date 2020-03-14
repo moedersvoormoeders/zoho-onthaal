@@ -78,7 +78,7 @@
               <td>{{result.redenControle}}</td>
               <td>
                 <form class="row">
-                  <input type="number" :value="ticketCount" class="col-6 mr-1">
+                  <input type="number" v-model.number="ticketCount" class="col-6 mr-1">
                   <button type="button" class="col-5 btn btn-primary" v-on:click="print(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
                 </form>
               </td>
@@ -108,7 +108,6 @@ export default {
   methods: {
     print: function(result) {
       var vm = this;
-
       result.ticketCount = this.ticketCount
 
       sendPrint(result).then(()=> {

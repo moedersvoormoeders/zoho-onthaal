@@ -63,6 +63,7 @@
               <td>
                 <font-awesome-icon :icon="['fas', 'check-square']" size="3x" style="color:green" v-if="result.classificatie == 'Actief'" />
                 <font-awesome-icon :icon="['fas', 'exclamation-triangle']" size="3x" style="color:#e0cf50" v-if="result.classificatie == 'CONTROLE'" />
+                <font-awesome-icon :icon="['far', 'history']" size="3x" style="color:#e0cf50" v-if="result.classificatie == 'TE VERLENGEN'" />
                 <font-awesome-icon :icon="['fas', 'times-octagon']" size="3x" style="color:red" v-if="result.classificatie == 'Niet-actief'" />
               </td>
               <td>{{result.doelgroepnummer}}</td>

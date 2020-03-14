@@ -37,6 +37,7 @@
               </div>
               <select class="custom-select" v-model="prefix">
                 <option value="MVM">Doelgroep</option>
+                <option value="E">Eenmaligen</option>
                 <option value>Op naam zoeken</option>
               </select>
             </div>
@@ -109,9 +110,19 @@ export default {
       var vm = this;
 
       result.ticketCount = this.ticketCount
-      try {
-        sendPrint(result)
-      } catch (error) {
+
+      sendPrint(result).then(()=> {
+          this.$Simplert.open({
+            title: "Print verstuurd",
+            message: "Print opdracht verstuurd naar de voeding",
+            type: "success",
+            customCloseBtnText: "Sluiten",
+            onClose: function() {
+              vm.$refs.search.focus()
+            }
+          });
+          this.ticketCount++
+      },(error)=> {
         this.$Simplert.open({
           title: "Printer probleem!",
           message: error,
@@ -121,28 +132,20 @@ export default {
             vm.$refs.search.focus()
           }
         });
-      }
-
-      this.$Simplert.open({
-          title: "Print verstuurd",
-          message: "Print opdracht verstuurd naar de voeding",
-          type: "success",
-          customCloseBtnText: "Sluiten",
-          onClose: function() {
-            vm.$refs.search.focus()
-          }
-      });
-
-      this.ticketCount++
-      console.log(result)
+      })
     },
     search: function() {
       let vm = this;
       this.searching = true;
+      let entity = "Accounts"
+      if (this.prefix == "E") {
+        // dirty patch here, should be properly sent into it's own value in the future
+        entity = "Eenmaligen"
+      }
       window.ZOHO.CRM.API.searchRecord({
-        Entity: "Accounts",
+        Entity: entity,
         Type: "word",
-        Query: `${this.prefix}${this.doelgroepnummer}`
+        Query: `${this.prefix == "E" ? "" : this.prefix}${this.doelgroepnummer}`
       }).then(function(res) {
         vm.searching = false;
 
@@ -155,6 +158,21 @@ export default {
             customCloseBtnText: "Sluiten"
           });
           return;
+        }
+
+
+        if (vm.prefix == "E") {
+          for (let result of res.data) {
+            console.log(result)
+            vm.results.push({
+               naam: result.Name,
+               voornaam: result.Eenmaligvoornaam,
+               doelgroepnummer: result.EenmaligNummer,
+               classificatie: result.EenmaligeStatus,
+               einddatum: result.Last_Activity_Time,
+            })
+          }
+          return
         }
 
         for (let result of res.data) {

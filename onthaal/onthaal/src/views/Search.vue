@@ -53,6 +53,7 @@
               <th scope="col">Naam</th>
               <th scope="col">Dag</th>
               <th scope="col">Code</th>
+              <th scope="col">Einddatum</th>
               <th scope="col">Classificatie</th>
               <th scope="col">Reden Controle</th>
               <th scope="col">Print</th>
@@ -71,12 +72,13 @@
               <td>{{result.naam}}</td>
               <td>{{result.dag}}</td>
               <td>{{result.code}}</td>
+              <td>{{result.einddatum}}
               <td>{{result.classificatie}}</td>
               <td>{{result.redenControle}}</td>
               <td>
                 <form class="row">
-                  <input type="number" :value="ticketCount" class="col-6 mr-2">
-                  <button type="button" class="col-2 btn btn-primary" v-on:click="print(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
+                  <input type="number" :value="ticketCount" class="col-6 mr-1">
+                  <button type="button" class="col-5 btn btn-primary" v-on:click="print(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
                 </form>
               </td>
             </tr>
@@ -166,6 +168,7 @@ export default {
             dag: result.Dag,
             classificatie: result.Rating,
             redenControle: result.Reden_Controle,
+            einddatum: result.Nieuwe_evaluatie,
           });
         }
       });

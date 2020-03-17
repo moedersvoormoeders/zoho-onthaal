@@ -186,6 +186,9 @@ export default {
             classificatie: result.Rating,
             redenControle: result.Reden_Controle,
             einddatum: result.Nieuwe_evaluatie,
+            typeVoeding: result.Geloof,
+            kinderen: result.Aantal_12,
+            volwassenen: result.Aantal_121,
           });
         }
       });

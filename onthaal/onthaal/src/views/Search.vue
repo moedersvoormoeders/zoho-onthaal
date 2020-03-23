@@ -111,6 +111,17 @@ export default {
       result.ticketCount = this.ticketCount
 
       sendPrint(result).then(()=> {
+          if (result.error) {
+            this.$Simplert.open({
+              title: "Printer probleem!",
+              message: result.error,
+              type : "error",
+              customCloseBtnText: "Sluiten",
+              onClose: function() {
+                vm.$refs.search.focus()
+              }
+            });
+          }
           this.$Simplert.open({
             title: "Print verstuurd",
             message: "Print opdracht verstuurd naar de voeding",

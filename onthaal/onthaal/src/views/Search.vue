@@ -128,7 +128,12 @@ export default {
           return
         }
 
-        voedingHelper.voedingVandaag(res.data[0]).then(()=> {this.print(result, res.data[0])}, (error) => {
+        return this.print(result, res.data[0])}
+
+
+        // readding this block turns on registration, this is either for after the corona crisis or when it gets worst
+        // we all hope the first
+        /*voedingHelper.voedingVandaag(res.data[0]).then(()=> {this.print(result, res.data[0])}, (error) => {
           this.$Simplert.open({
             title: "Voeding registratie error!",
             message: error,
@@ -149,7 +154,7 @@ export default {
           onClose: function() {
             vm.$refs.search.focus()
           }
-        });
+        });*/
       })
     },
     print: function(result, voedingResult) {

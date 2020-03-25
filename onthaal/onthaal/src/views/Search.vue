@@ -79,7 +79,7 @@
               <td>
                 <form class="row">
                   <input type="number" v-model.number="ticketCount" class="col-6 mr-1">
-                  <button type="button" class="col-5 btn btn-primary" v-on:click="print(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
+                  <button type="button" class="col-5 btn btn-primary" v-on:click="lookupVoeding(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
                 </form>
               </td>
             </tr>
@@ -91,6 +91,8 @@
 </template>
 
 <script>
+import * as voedingHelper from "../helpers/voeding"
+
 export default {
   template: "#search",
   components: {},
@@ -106,9 +108,56 @@ export default {
   },
 
   methods: {
-    print: function(result) {
+    lookupVoeding: function(result) {
+      var vm = this
+      window.ZOHO.CRM.API.searchRecord({
+        Entity: "voeding",
+        Type: "word",
+        Query: result.doelgroepnummer
+      }).then((res) => {
+        if (!res.data || res.data.length == 0) {
+          this.$Simplert.open({
+            title: "Voeding error!",
+            message: "Geen voeding gegevens",
+            type : "error",
+            customCloseBtnText: "Sluiten",
+            onClose: function() {
+              vm.$refs.search.focus()
+            }
+          });
+          return
+        }
+
+        voedingHelper.voedingVandaag(res.data[0]).then(()=> {this.print(result, res.data[0])}, (error) => {
+          this.$Simplert.open({
+            title: "Voeding registratie error!",
+            message: error,
+            type : "error",
+            customCloseBtnText: "Sluiten",
+            onClose: function() {
+              vm.$refs.search.focus()
+            }
+          })
+        })
+
+      }, (error) => {
+        this.$Simplert.open({
+          title: "Voeding error!",
+          message: error,
+          type : "error",
+          customCloseBtnText: "Sluiten",
+          onClose: function() {
+            vm.$refs.search.focus()
+          }
+        });
+      })
+    },
+    print: function(result, voedingResult) {
       var vm = this;
       result.ticketCount = this.ticketCount
+      result.needsMelkpoeder = voedingHelper.needsMelkpoeder(voedingResult)
+      result.specialeVoeding = voedingResult.Speciale_voeding
+      result.opmerking = voedingResult.Algemene_Opmerkingen
 
       sendPrint(result).then(()=> {
           if (result.error) {

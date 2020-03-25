@@ -128,7 +128,7 @@ export default {
           return
         }
 
-        return this.print(result, res.data[0])}
+        return vm.print(result, res.data[0])
 
 
         // readding this block turns on registration, this is either for after the corona crisis or when it gets worst
@@ -161,6 +161,7 @@ export default {
       var vm = this;
       result.ticketCount = this.ticketCount
       result.needsMelkpoeder = voedingHelper.needsMelkpoeder(voedingResult)
+      result.needsVerjaardag = voedingHelper.needsVerjaardag(voedingResult)
       result.specialeVoeding = voedingResult.Speciale_voeding
       result.opmerking = voedingResult.Algemene_Opmerkingen
 
@@ -274,6 +275,7 @@ export default {
 };
 
 async function sendPrint(data = {}) {
+  console.log(data)
   const response = await fetch("https://print.voeding.mvm.maartje.dev/print", {
     method: 'POST',
     mode: 'cors',

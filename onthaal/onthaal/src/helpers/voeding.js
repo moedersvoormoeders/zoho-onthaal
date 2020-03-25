@@ -18,6 +18,30 @@ export const needsMelkpoeder = (result) => {
     return false
 }
 
+export const needsVerjaardag= (result) => {
+  if (!result.Geboortedata) {
+      return false
+  }
+
+  const today = new Date()
+
+  const lines = result.Geboortedata.split("\n")
+  for (let line of lines) {
+      const parts = line.split(" ")
+      let date = Date.parse(parts[0])
+      if (isNaN(date)) {
+          continue
+      }
+      date = new Date(date)
+      const birthdayThisYear = new Date(today.getFullYear(), date.getMonth(), date.getDate())
+      if ((birthdayThisYear.getTime() - Date.now())/1000/60/60/24 < 6 && (birthdayThisYear.getTime() - Date.now())/1000/60/60/24 > -1) { // birthday in this week
+          return true
+      }
+  }
+
+  return false
+}
+
 // JS version of ZOHO button
 export const voedingVandaag = async (result) => {
 

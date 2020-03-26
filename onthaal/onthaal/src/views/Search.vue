@@ -275,7 +275,6 @@ export default {
 };
 
 async function sendPrint(data = {}) {
-  console.log(data)
   const response = await fetch("https://print.voeding.mvm.maartje.dev/print", {
     method: 'POST',
     mode: 'cors',

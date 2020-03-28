@@ -12,7 +12,7 @@ export const needsMelkpoeder = (result) => {
         if (isNaN(date)) {
             continue
         }
-        if ((Date.now() - date)/1000/60/60/24 < 365) { // age in days
+        if ((Date.now() - date)/1000/60/60/24 < 730) { // age in days
             let hadMelkpoeder = false
 
             // check if melkpoeder has been given before

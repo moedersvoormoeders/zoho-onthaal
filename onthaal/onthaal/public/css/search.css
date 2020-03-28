@@ -13,3 +13,11 @@
 .form-print input {
     width: 30%;
 }
+
+.container {
+    max-width: 1400px !important; 
+}
+
+.print-num {
+    max-width: 100px;
+}

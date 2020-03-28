@@ -46,6 +46,18 @@
       </form>
       <div class="row" v-if="results.length > 0">
         <table class="table">
+          <colgroup>
+            <col/>
+            <col/>
+            <col/>
+            <col/>
+            <col/>
+            <col/>
+            <col/>
+            <col/>
+            <col/>
+            <col/>
+          </colgroup>
           <thead>
             <tr>
               <th scope="col"></th>
@@ -79,7 +91,7 @@
               <td>
                 <form class="row">
                   <input type="number" v-model.number="ticketCount" class="col-6 mr-1">
-                  <button type="button" class="col-5 btn btn-primary" v-on:click="lookupVoeding(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
+                  <button type="button" class="col-5 btn btn-primary print-num" v-on:click="lookupVoeding(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
                 </form>
               </td>
             </tr>
@@ -128,8 +140,22 @@ export default {
           return
         }
 
-        return vm.print(result, res.data[0])
-
+        window.ZOHO.CRM.API.getRecord({
+          Entity: "Voeding",
+          RecordID: res.data[0].id
+        }).then((resDetail) => {
+          return vm.print(result, resDetail.data[0])
+        }, (error) => {
+          this.$Simplert.open({
+            title: "Voeding error!",
+            message: error,
+            type : "error",
+            customCloseBtnText: "Sluiten",
+            onClose: function() {
+              vm.$refs.search.focus()
+            }
+          })
+        })
 
         // readding this block turns on registration, this is either for after the corona crisis or when it gets worst
         // we all hope the first
@@ -275,6 +301,7 @@ export default {
 };
 
 async function sendPrint(data = {}) {
+  console.log(data)
   const response = await fetch("https://print.voeding.mvm.maartje.dev/print", {
     method: 'POST',
     mode: 'cors',

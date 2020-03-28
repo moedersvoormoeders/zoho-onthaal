@@ -1,5 +1,7 @@
 export const needsMelkpoeder = (result) => {
-    if (!result.Geboortedata) {
+    
+    if (!result.Geboortedata || !result.Geschiedenis) {
+      console.log(result)
         return false
     }
 
@@ -11,7 +13,20 @@ export const needsMelkpoeder = (result) => {
             continue
         }
         if ((Date.now() - date)/1000/60/60/24 < 365) { // age in days
-            return true
+            let hadMelkpoeder = false
+
+            // check if melkpoeder has been given before
+            for (let pakket of result.Geschiedenis) {
+              if (!pakket.Gekregen) {
+                continue
+              }
+              for (let gekregen of pakket.Gekregen) {
+                if (gekregen.includes("Melkpoeder")) {
+                  hadMelkpoeder = true
+                }
+              }
+            }
+            return hadMelkpoeder
         }
     }
 
@@ -43,19 +58,7 @@ export const needsVerjaardag= (result) => {
 }
 
 // JS version of ZOHO button
-export const voedingVandaag = async (result) => {
-
-    const voedingData = await window.ZOHO.CRM.API.getRecord({
-        Entity: "Voeding",
-        RecordID: result.id
-    })
-
-    if (!voedingData.data || voedingData.data.length == 0) {
-        throw new Error("No data found")
-    }
-
-    const data = voedingData.data[0]
-
+export const voedingVandaag = async (data) => {
     const today = new Date();
     for (let pakket of data.Geschiedenis) {
       if (pakket.Datum == formatDate(today)) {

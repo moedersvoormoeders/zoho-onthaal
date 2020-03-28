@@ -36,6 +36,8 @@ class Print(Resource):
             p.text("\n"+content['specialeVoeding']+"\n")
         if content['needsVerjaardag']: 
             p.text("\nVERJAARDAG\n")
+        if content['needsMelkpoeder']: 
+            p.text("\MELKPOEDER\n")
         p.cut()
         return {'status': 'ok'}
 

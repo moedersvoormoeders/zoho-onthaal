@@ -32,6 +32,8 @@ class Print(Resource):
         p.text(content['code']+"\n")
         p.text("Volwassenen: " + str(content['volwassenen'])+"\n")
         p.text("Kinderen: " + str(content['kinderen'])+"\n")
+        if content['specialeVoeding'] is not None: 
+            p.text("\n"+content['specialeVoeding']+"\n")
         if content['needsVerjaardag']: 
             p.text("\nVERJAARDAG\n")
         p.cut()

@@ -229,14 +229,25 @@ export default {
       let vm = this;
       this.searching = true;
       let entity = "Accounts"
+      let searchPrefix = this.prefix
+      let seachTerm = this.doelgroepnummer
+
       if (this.prefix == "E") {
         // dirty patch here, should be properly sent into it's own value in the future
         entity = "Eenmaligen"
+        searchPrefix = ""
       }
+
+      if (this.doelgroepnummer.length >= 11 && !isNaN(parseInt(this.doelgroepnummer,10))) {
+        // we have a rijksregisternummer!
+        seachTerm = this.doelgroepnummer.substring(0,11);
+        searchPrefix = ""
+      }
+
       window.ZOHO.CRM.API.searchRecord({
         Entity: entity,
         Type: "word",
-        Query: `${this.prefix == "E" ? "" : this.prefix}${this.doelgroepnummer}`
+        Query: `${searchPrefix}${seachTerm}`
       }).then(function(res) {
         vm.searching = false;
 

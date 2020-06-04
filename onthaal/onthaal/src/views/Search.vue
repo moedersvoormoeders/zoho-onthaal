@@ -278,6 +278,11 @@ export default {
         }
 
         for (let result of res.data) {
+          // a super long in statement just to say if a number is given check if it actually contains it
+          // as zoho searches in all fields non-related entries do show up
+          if (result.Doelgroep_nummer && searchPrefix == "MVM" && result.Doelgroep_nummer.indexOf(`${searchPrefix}${seachTerm}`) == -1) {
+            continue
+          }
           console.log(result)
           vm.results.push({
             id: result.id,

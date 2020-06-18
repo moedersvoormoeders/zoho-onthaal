@@ -137,9 +137,6 @@ export default {
     lookupVoeding: function(result) {
       var vm = this
 
-      // reset printType
-      vm.printType = "Gewoon"
-
       window.ZOHO.CRM.API.searchRecord({
         Entity: "voeding",
         Type: "word",
@@ -210,10 +207,10 @@ export default {
       result.opmerking = voedingResult.Algemene_Opmerkingen
       result.printType = vm.printType
 
-      sendPrint(result).then(()=> {
+      sendPrint(result).then((response)=> {
           vm.printed.push(result.doelgroepnummer)
 
-          if (result.error) {
+          if (response.status == "error") {
             this.$Simplert.open({
               title: "Printer probleem!",
               message: result.error,
@@ -223,6 +220,7 @@ export default {
                 vm.$refs.search.focus()
               }
             });
+            return
           }
           this.$Simplert.open({
             title: "Print verstuurd",
@@ -248,6 +246,9 @@ export default {
     },
     search: function() {
       let vm = this;
+
+      // reset printType
+      vm.printType = "Gewoon"
       this.searching = true;
       let entity = "Accounts"
       let searchPrefix = this.prefix

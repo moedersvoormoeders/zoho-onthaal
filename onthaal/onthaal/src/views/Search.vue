@@ -90,8 +90,16 @@
               <td>{{result.redenControle}}</td>
               <td>
                 <form class="row">
-                  <input type="number" v-model.number="ticketCount" class="col-6 mr-1">
-                  <button type="button" class="col-5 btn btn-primary print-num" v-on:click="lookupVoeding(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
+                  <select class="col-5 m-1 form-control" v-model="printType">
+                    <option>Gewoon</option>
+                    <option>Voorrang</option>
+                    <option>Man buiten</option>
+                    <option>Leveren bij inschrijving</option>
+                  </select>
+                  <button type="button" class="col-5 m-1 btn btn-primary print-num" v-on:click="lookupVoeding(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
+                  <div class="col-1">
+                    <font-awesome-icon :icon="['fas', 'check-square']" size="3x" style="color:green" v-if="hasPrinted(result.doelgroepnummer)" />
+                  </div>
                 </form>
               </td>
             </tr>
@@ -110,6 +118,8 @@ export default {
   components: {},
   data: function() {
     return {
+      printed: [],
+      printType: "Gewoon",
       loading: true,
       doelgroepnummer: "",
       prefix: "MVM",
@@ -120,8 +130,16 @@ export default {
   },
 
   methods: {
+    hasPrinted: function(number) {
+      console.log(this.printed)
+      return this.printed.includes(number)
+    },
     lookupVoeding: function(result) {
       var vm = this
+
+      // reset printType
+      vm.printType = "Gewoon"
+
       window.ZOHO.CRM.API.searchRecord({
         Entity: "voeding",
         Type: "word",
@@ -159,7 +177,7 @@ export default {
 
         // readding this block turns on registration, this is either for after the corona crisis or when it gets worst
         // we all hope the first
-        /*voedingHelper.voedingVandaag(res.data[0]).then(()=> {this.print(result, res.data[0])}, (error) => {
+        voedingHelper.voedingVandaag(res.data[0]).then(()=> {this.print(result, res.data[0])}, (error) => {
           this.$Simplert.open({
             title: "Voeding registratie error!",
             message: error,
@@ -180,7 +198,7 @@ export default {
           onClose: function() {
             vm.$refs.search.focus()
           }
-        });*/
+        });
       })
     },
     print: function(result, voedingResult) {
@@ -190,8 +208,11 @@ export default {
       result.needsVerjaardag = voedingHelper.needsVerjaardag(voedingResult)
       result.specialeVoeding = voedingResult.Speciale_voeding
       result.opmerking = voedingResult.Algemene_Opmerkingen
+      result.printType = vm.printType
 
       sendPrint(result).then(()=> {
+          vm.printed.push(result.doelgroepnummer)
+
           if (result.error) {
             this.$Simplert.open({
               title: "Printer probleem!",

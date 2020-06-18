@@ -203,7 +203,7 @@ export default {
     },
     print: function(result, voedingResult) {
       var vm = this;
-      result.ticketCount = this.ticketCount
+      //result.ticketCount = this.ticketCount
       result.needsMelkpoeder = voedingHelper.needsMelkpoeder(voedingResult)
       result.needsVerjaardag = voedingHelper.needsVerjaardag(voedingResult)
       result.specialeVoeding = voedingResult.Speciale_voeding

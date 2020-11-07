@@ -1,3 +1,4 @@
 [submodule "font-awesome"]
 	path = onthaal/onthaal/public/font-awesome
 	url = https://github.com/moedersvoormoeders/font-awesome.git
+	branch = zoho

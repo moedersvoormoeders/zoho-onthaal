@@ -2,6 +2,11 @@ module.exports = {
     publicPath: "./",
     "runtimeCompiler": true,
     configureWebpack: {
+        performance: {
+            hints: false,
+            maxEntrypointSize: 5120000,
+            maxAssetSize: 5120000
+        },
         optimization: {
             runtimeChunk: 'single',
             splitChunks: {

@@ -137,7 +137,7 @@ export default {
         return false
       }
 
-      return this.printed[today].includes(number)
+      return (this.printed[new Date().toLocaleDateString()] || []).includes(number)
     },
     lookupVoeding: function(result) {
       var vm = this
@@ -215,9 +215,10 @@ export default {
       sendPrint(result).then((response)=> {
           const today = new Date().toLocaleDateString()
           if (!vm.printed[today]) {
-            vm.printed[today] = []
+            vm.$set(vm.printed, today, [])
           }
-          vm.printed[today].push(result.doelgroepnummer)
+
+          vm.$set(vm.printed, today, vm.printed[today].concat([result.doelgroepnummer]))
 
           if (response.status == "error") {
             this.$Simplert.open({

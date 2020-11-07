@@ -338,13 +338,11 @@ export default {
 
   created: function() {
     let vm = this;
-    //window.ZOHO.embeddedApp.on("PageLoad", function() {
-      //vm.loading = false;
-    //});
-    //window.ZOHO.embeddedApp.init();
-    window.ZOHO.API.AUTH.getAccess() 
-
-    vm.loading = false; // RM ME
+    window.ZOHO.embeddedApp.on("PageLoad", function() {
+      vm.loading = false;
+    });
+    window.ZOHO.embeddedApp.init();
+    window.ZOHO.API.AUTH.getAccess()
   }
 };
 

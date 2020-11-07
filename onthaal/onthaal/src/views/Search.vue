@@ -25,7 +25,7 @@
               v-on:click="search()"
               :disabled="searching"
             >
-              <font-awesome-icon :icon="['fas', 'search']" /> Zoeken
+              <i class="fas fa-search"></i> Zoeken
             </button>
           </div>
         </div>
@@ -75,10 +75,10 @@
           <tbody>
             <tr v-for="result in results" v-bind:key="result.id">
               <td>
-                <font-awesome-icon :icon="['fas', 'check-square']" size="3x" style="color:green" v-if="result.classificatie == 'Actief'" />
-                <font-awesome-icon :icon="['fas', 'exclamation-triangle']" size="3x" style="color:#e0cf50" v-if="result.classificatie == 'CONTROLE'" />
-                <font-awesome-icon :icon="['far', 'history']" size="3x" style="color:#e0cf50" v-if="result.classificatie == 'TE VERLENGEN'" />
-                <font-awesome-icon :icon="['fas', 'times-octagon']" size="3x" style="color:red" v-if="result.classificatie == 'Niet-actief'" />
+                <i class="fas fa-check-square fa-3x" style="color:green" v-if="result.classificatie == 'Actief'"></i>
+                <i class="fas fa-exclamation-triangle fa-3x" style="color:#e0cf50" v-if="result.classificatie == 'CONTROLE'"></i>
+                <i class="far fa-history fa-3x" style="color:#e0cf50" v-if="result.classificatie == 'TE VERLENGEN'"></i>
+                <i class="fas fa-times-octagon fa-3x" style="color:red" v-if="result.classificatie == 'Niet-actief'"></i>
               </td>
               <td>{{result.doelgroepnummer}}</td>
               <td>{{result.voornaam}}</td>
@@ -96,9 +96,9 @@
                     <option>Man buiten</option>
                     <option>Leveren bij inschrijving</option>
                   </select>
-                  <button type="button" class="col-5 m-1 btn btn-primary print-num" v-on:click="lookupVoeding(result)"><font-awesome-icon :icon="['fad', 'print']"/></button>
+                  <button type="button" class="col-5 m-1 btn btn-primary print-num" v-on:click="lookupVoeding(result)"><i class="fad fa-print"></i></button>
                   <div class="col-1">
-                    <font-awesome-icon :icon="['fas', 'check-square']" size="3x" style="color:green" v-if="hasPrinted(result.doelgroepnummer)" />
+                    <i class="fas fa-check-square fa-3x" style="color:green" v-if="hasPrinted(result.doelgroepnummer)" ></i>
                   </div>
                 </form>
               </td>

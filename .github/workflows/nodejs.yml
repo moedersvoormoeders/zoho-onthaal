@@ -6,14 +6,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
+        submodules: true
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: Add FA token
-      run: |
-        npm config set "@fortawesome:registry" https://npm.fontawesome.com/ && \
-        npm config set "//npm.fontawesome.com/:_authToken" ${{secrets.FA_TOKEN}}
     - name: Install zoho utils
       run: |
         npm install -g zoho-extension-toolkit

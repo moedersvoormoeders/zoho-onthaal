@@ -118,7 +118,7 @@ export default {
   components: {},
   data: function() {
     return {
-      printed: [],
+      printed: {},
       printType: "Gewoon",
       loading: true,
       doelgroepnummer: "",
@@ -131,8 +131,13 @@ export default {
 
   methods: {
     hasPrinted: function(number) {
-      console.log(this.printed)
-      return this.printed.includes(number)
+      const today = new Date().toLocaleDateString()
+
+      if (!this.printed[today]) {
+        return false
+      }
+
+      return this.printed[today].includes(number)
     },
     lookupVoeding: function(result) {
       var vm = this
@@ -208,7 +213,11 @@ export default {
       result.printType = vm.printType
 
       sendPrint(result).then((response)=> {
-          vm.printed.push(result.doelgroepnummer)
+          const today = new Date().toLocaleDateString()
+          if (!vm.printed[today]) {
+            vm.printed[today] = []
+          }
+          vm.printed[today].push(result.doelgroepnummer)
 
           if (response.status == "error") {
             this.$Simplert.open({
@@ -329,10 +338,11 @@ export default {
 
   created: function() {
     let vm = this;
-    window.ZOHO.embeddedApp.on("PageLoad", function() {
-      vm.loading = false;
-    });
-    window.ZOHO.embeddedApp.init();
+    //window.ZOHO.embeddedApp.on("PageLoad", function() {
+      //vm.loading = false;
+    //});
+    //window.ZOHO.embeddedApp.init();
+    window.ZOHO.API.AUTH.getAccess() 
 
     vm.loading = false; // RM ME
   }

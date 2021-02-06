@@ -112,6 +112,7 @@
 
 <script>
 import * as voedingHelper from "../helpers/voeding"
+import { keyboardHelper } from "@/helpers/keyboard.helper";
 
 export default {
   template: "#search",
@@ -262,7 +263,8 @@ export default {
       this.searching = true;
       let entity = "Accounts"
       let searchPrefix = this.prefix
-      let seachTerm = this.doelgroepnummer
+      let seachTerm = keyboardHelper.superCrazyAzertyBarcodeFix(this.doelgroepnummer)
+
 
       if (this.prefix == "E") {
         // dirty patch here, should be properly sent into it's own value in the future
@@ -270,9 +272,9 @@ export default {
         searchPrefix = ""
       }
 
-      if (this.doelgroepnummer.length >= 11 && !isNaN(parseInt(this.doelgroepnummer,10))) {
+      if (seachTerm.length >= 11 && !isNaN(parseInt(seachTerm,10))) {
         // we have a rijksregisternummer!
-        seachTerm = this.doelgroepnummer.substring(0,11);
+        seachTerm = seachTerm.substring(0,11);
         searchPrefix = ""
       }
 
